@@ -1,0 +1,712 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProType - Advanced Typing Test</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #f2f4fc;
+    --card: #ffffff;
+    --text: #20243a;
+    --muted: #858ba3;
+    --primary: #6c63ff;
+    --border: #e7e8f2;
+}
+
+body.dark {
+    --bg: #111426;
+    --card: #1d2238;
+    --text: #f5f5ff;
+    --muted: #a2a8c0;
+    --border: #343951;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 25px 15px;
+    transition: .3s;
+}
+
+.container {
+    max-width: 1050px;
+    margin: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.logo span {
+    color: var(--text);
+}
+
+.header-right {
+    display: flex;
+    gap: 10px;
+}
+
+.top-btn {
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    padding: 11px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+h1 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--muted);
+    margin-bottom: 30px;
+}
+
+.settings {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 16px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 15px;
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+}
+
+.setting label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+    cursor: pointer;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid var(--border);
+    text-align: center;
+}
+
+.stat h2 {
+    font-size: 30px;
+    color: var(--primary);
+    margin-bottom: 6px;
+}
+
+.stat p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.main-card {
+    background: var(--card);
+    padding: 25px;
+    border-radius: 17px;
+    border: 1px solid var(--border);
+}
+
+.test-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.progress {
+    height: 8px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 22px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg,#6c63ff,#a855f7);
+    transition: .2s;
+}
+
+#passage {
+    font-size: 21px;
+    line-height: 2;
+    letter-spacing: .5px;
+    min-height: 145px;
+    color: var(--muted);
+    user-select: none;
+    overflow-wrap: anywhere;
+}
+
+.char.correct {
+    color: #16b981;
+}
+
+.char.incorrect {
+    color: #ff5252;
+    background: #ff525222;
+    border-radius: 3px;
+}
+
+.char.current {
+    border-left: 2px solid var(--primary);
+}
+
+#typingInput {
+    width: 100%;
+    margin-top: 20px;
+    padding: 17px;
+    height: 115px;
+    resize: none;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 17px;
+    outline: none;
+}
+
+#typingInput:focus {
+    border-color: var(--primary);
+}
+
+.controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 13px 22px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: .2s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    opacity: .9;
+}
+
+.primary {
+    background: var(--primary);
+    color: white;
+}
+
+.secondary {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.result {
+    display: none;
+    background: var(--card);
+    padding: 25px;
+    border-radius: 16px;
+    margin-top: 20px;
+    border: 1px solid var(--border);
+}
+
+.result h2 {
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.history {
+    background: var(--card);
+    padding: 23px;
+    border-radius: 16px;
+    margin-top: 20px;
+    border: 1px solid var(--border);
+}
+
+.history h2 {
+    margin-bottom: 15px;
+}
+
+.history-item {
+    padding: 13px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 14px;
+}
+
+footer {
+    text-align: center;
+    color: var(--muted);
+    padding: 25px;
+}
+
+@media(max-width:650px) {
+    .settings {
+        grid-template-columns: 1fr;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    h1 {
+        font-size: 25px;
+    }
+
+    #passage {
+        font-size: 18px;
+    }
+
+    .main-card {
+        padding: 16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <div class="logo">⌨ Pro<span>Type</span></div>
+
+    <div class="header-right">
+        <button class="top-btn" onclick="toggleTheme()" id="themeBtn">🌙 Dark</button>
+    </div>
+</header>
+
+<h1>Advanced Typing Speed Test</h1>
+<p class="subtitle">Improve your typing speed, accuracy and skills!</p>
+
+<div class="settings">
+
+    <div class="setting">
+        <label>⏱ Test Duration</label>
+        <select id="duration">
+            <option value="15">15 Seconds</option>
+            <option value="30">30 Seconds</option>
+            <option value="60" selected>60 Seconds</option>
+            <option value="120">120 Seconds</option>
+        </select>
+    </div>
+
+    <div class="setting">
+        <label>🎯 Difficulty</label>
+        <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+    </div>
+
+    <div class="setting">
+        <label>📚 Test Mode</label>
+        <select id="mode">
+            <option value="random">Random Text</option>
+            <option value="sentences">Sentences</option>
+            <option value="paragraph">Paragraph</option>
+        </select>
+    </div>
+
+</div>
+
+<div class="stats">
+
+    <div class="stat">
+        <h2 id="time">60</h2>
+        <p>Time Left</p>
+    </div>
+
+    <div class="stat">
+        <h2 id="wpm">0</h2>
+        <p>Words Per Minute</p>
+    </div>
+
+    <div class="stat">
+        <h2 id="accuracy">100%</h2>
+        <p>Accuracy</p>
+    </div>
+
+    <div class="stat">
+        <h2 id="errors">0</h2>
+        <p>Errors</p>
+    </div>
+
+</div>
+
+<div class="main-card">
+
+    <div class="test-top">
+        <span id="status">Ready to start</span>
+        <span id="progressText">0% completed</span>
+    </div>
+
+    <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="passage"></div>
+
+    <textarea id="typingInput"
+    placeholder="Click Start Test and begin typing..."
+    disabled spellcheck="false"></textarea>
+
+    <div class="controls">
+        <button class="btn primary" onclick="startTest()">▶ Start Test</button>
+        <button class="btn secondary" onclick="resetTest()">↻ Restart</button>
+        <button class="btn secondary" onclick="newPassage()">🔄 New Text</button>
+    </div>
+
+</div>
+
+<div class="result" id="result">
+    <h2>🏆 Test Completed!</h2>
+    <div id="finalResult"></div>
+</div>
+
+<div class="history">
+    <h2>📊 Personal Records</h2>
+    <div id="best">Best Speed: 0 WPM</div>
+    <div id="historyList"></div>
+    <br>
+    <button class="btn secondary" onclick="clearHistory()">Clear History</button>
+</div>
+
+<footer>
+    ProType © 2026 | Practice Daily, Improve Your Speed!
+</footer>
+
+</div>
+
+<script>
+
+const passages = {
+easy: [
+"The sun is shining today. I like to learn new things.",
+"Practice typing every day to improve your computer skills.",
+"Learning is a wonderful journey. Keep working hard.",
+"Technology makes our daily life easier and better."
+],
+
+medium: [
+"Success comes from dedication, patience and consistent practice.",
+"Typing faster can help you complete your work more efficiently.",
+"Technology connects people and creates new opportunities.",
+"Developing good habits is an important part of personal growth."
+],
+
+hard: [
+"JavaScript, HTML and CSS are essential technologies for web development.",
+"Efficiency, consistency, creativity and determination improve productivity.",
+"Modern applications require responsive interfaces and interactive features.",
+"Programming encourages logical thinking, problem-solving and innovation."
+]
+};
+
+const paragraph = [
+"Learning new skills is an important part of life. Regular practice helps us become more confident and efficient. Technology provides many opportunities to learn, create and improve our knowledge.",
+"Computer skills are useful in education and professional life. Typing accurately saves time and helps us communicate information clearly. Consistent practice is the key to improvement."
+];
+
+let text = "";
+let timeLeft = 60;
+let timer = null;
+let running = false;
+let startTime = 0;
+let best = Number(localStorage.getItem("proBest")) || 0;
+
+const input = document.getElementById("typingInput");
+const passage = document.getElementById("passage");
+
+function getText() {
+    const level = document.getElementById("difficulty").value;
+    const mode = document.getElementById("mode").value;
+
+    let list = mode === "paragraph"
+        ? paragraph
+        : passages[level];
+
+    if(mode === "random") {
+        list = [...passages[level], ...paragraph];
+    }
+
+    return list[Math.floor(Math.random() * list.length)];
+}
+
+function renderText() {
+    passage.innerHTML = "";
+
+    text.split("").forEach((char, index) => {
+        const span = document.createElement("span");
+        span.className = "char";
+        span.textContent = char;
+
+        if(index === 0) span.classList.add("current");
+
+        passage.appendChild(span);
+    });
+}
+
+function newPassage() {
+    if(running) return;
+
+    resetTest();
+    text = getText();
+    renderText();
+}
+
+function startTest() {
+    if(running) return;
+
+    resetTest();
+
+    timeLeft = Number(document.getElementById("duration").value);
+    document.getElementById("time").textContent = timeLeft;
+
+    running = true;
+    startTime = Date.now();
+
+    input.disabled = false;
+    input.focus();
+
+    document.getElementById("status").textContent = "⌨ Typing in progress...";
+    document.getElementById("result").style.display = "none";
+
+    timer = setInterval(() => {
+        timeLeft = Math.max(0, Number(document.getElementById("duration").value) -
+            Math.floor((Date.now() - startTime) / 1000));
+
+        document.getElementById("time").textContent = timeLeft;
+
+        updateStats();
+
+        if(timeLeft <= 0) finishTest();
+    }, 200);
+}
+
+input.addEventListener("input", () => {
+    if(!running) return;
+
+    const typed = input.value;
+    const spans = passage.querySelectorAll(".char");
+
+    let correct = 0;
+    let errors = 0;
+
+    spans.forEach((span, index) => {
+        span.className = "char";
+
+        if(index < typed.length) {
+            if(typed[index] === text[index]) {
+                span.classList.add("correct");
+                correct++;
+            } else {
+                span.classList.add("incorrect");
+                errors++;
+            }
+        }
+
+        if(index === typed.length) {
+            span.classList.add("current");
+        }
+    });
+
+    updateStats();
+
+    if(typed.length >= text.length) {
+        finishTest();
+    }
+});
+
+function updateStats() {
+    const typed = input.value;
+
+    let correct = 0;
+    let errors = 0;
+
+    for(let i = 0; i < typed.length; i++) {
+        if(typed[i] === text[i]) correct++;
+        else errors++;
+    }
+
+    const elapsed = Math.max((Date.now() - startTime) / 60000, 0.001);
+
+    const wpm = Math.round((correct / 5) / elapsed);
+    const accuracy = typed.length
+        ? Math.round((correct / typed.length) * 100)
+        : 100;
+
+    const progress = Math.min((typed.length / text.length) * 100, 100);
+
+    document.getElementById("wpm").textContent = wpm;
+    document.getElementById("accuracy").textContent = accuracy + "%";
+    document.getElementById("errors").textContent = errors;
+
+    document.getElementById("progressBar").style.width = progress + "%";
+    document.getElementById("progressText").textContent =
+        Math.round(progress) + "% completed";
+}
+
+function finishTest() {
+    if(!running) return;
+
+    clearInterval(timer);
+    running = false;
+    input.disabled = true;
+
+    updateStats();
+
+    const wpm = Number(document.getElementById("wpm").textContent);
+    const accuracy = document.getElementById("accuracy").textContent;
+    const errors = document.getElementById("errors").textContent;
+
+    document.getElementById("status").textContent = "Test finished!";
+
+    if(wpm > best) {
+        best = wpm;
+        localStorage.setItem("proBest", best);
+    }
+
+    document.getElementById("best").textContent =
+        "🏆 Best Speed: " + best + " WPM";
+
+    document.getElementById("finalResult").innerHTML =
+        "<p>⚡ Speed: <b>" + wpm + " WPM</b></p><br>" +
+        "<p>🎯 Accuracy: <b>" + accuracy + "</b></p><br>" +
+        "<p>❌ Errors: <b>" + errors + "</b></p>";
+
+    document.getElementById("result").style.display = "block";
+
+    saveHistory(wpm, accuracy);
+}
+
+function saveHistory(wpm, accuracy) {
+    let history = JSON.parse(localStorage.getItem("proHistory") || "[]");
+
+    history.unshift({
+        wpm,
+        accuracy,
+        date: new Date().toLocaleString()
+    });
+
+    history = history.slice(0, 10);
+
+    localStorage.setItem("proHistory", JSON.stringify(history));
+    showHistory();
+}
+
+function showHistory() {
+    const history = JSON.parse(localStorage.getItem("proHistory") || "[]");
+
+    document.getElementById("historyList").innerHTML =
+        history.map(item =>
+            `<div class="history-item">
+                <span>${item.wpm} WPM | ${item.accuracy}</span>
+                <span>${item.date}</span>
+            </div>`
+        ).join("") || "<p>No test records yet.</p>";
+}
+
+function clearHistory() {
+    if(confirm("Are you sure you want to clear all typing history?")) {
+        localStorage.removeItem("proHistory");
+        showHistory();
+    }
+}
+
+function resetTest() {
+    clearInterval(timer);
+
+    running = false;
+    timeLeft = Number(document.getElementById("duration").value);
+
+    input.value = "";
+    input.disabled = true;
+
+    document.getElementById("time").textContent = timeLeft;
+    document.getElementById("wpm").textContent = 0;
+    document.getElementById("accuracy").textContent = "100%";
+    document.getElementById("errors").textContent = 0;
+    document.getElementById("progressBar").style.width = "0%";
+    document.getElementById("progressText").textContent = "0% completed";
+    document.getElementById("status").textContent = "Ready to start";
+    document.getElementById("result").style.display = "none";
+
+    renderText();
+}
+
+function toggleTheme() {
+    document.body.classList.toggle("dark");
+
+    const dark = document.body.classList.contains("dark");
+
+    document.getElementById("themeBtn").textContent =
+        dark ? "☀ Light" : "🌙 Dark";
+
+    localStorage.setItem("proTheme", dark ? "dark" : "light");
+}
+
+if(localStorage.getItem("proTheme") === "dark") {
+    document.body.classList.add("dark");
+    document.getElementById("themeBtn").textContent = "☀ Light";
+}
+
+document.getElementById("best").textContent =
+    "🏆 Best Speed: " + best + " WPM";
+
+showHistory();
+newPassage();
+
+</script>
+
+</body>
+</html>
