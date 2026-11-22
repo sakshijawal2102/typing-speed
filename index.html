@@ -1,0 +1,1130 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeMaster - Typing Speed Test</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #101126;
+    --card: #1c1d3a;
+    --card2: #252648;
+    --text: #ffffff;
+    --muted: #aaaecb;
+    --primary: #8b5cf6;
+    --secondary: #ec4899;
+    --border: #353657;
+}
+
+body.light {
+    --bg: #f0f0ff;
+    --card: #ffffff;
+    --card2: #f0edff;
+    --text: #22223b;
+    --muted: #72738c;
+    --border: #e1def5;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background:
+        radial-gradient(circle at 10% 10%,#6633aa44,transparent 35%),
+        radial-gradient(circle at 90% 80%,#e83eaa33,transparent 35%),
+        var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px;
+    transition: .3s;
+}
+
+button, select, textarea {
+    font: inherit;
+}
+
+.container {
+    max-width: 1100px;
+    width: 100%;
+    margin: auto;
+}
+
+/* HEADER */
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 45px;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 900;
+    background: linear-gradient(90deg,#a78bfa,#ec4899);
+    color: transparent;
+    background-clip: text;
+}
+
+.logo span {
+    color: var(--text);
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.icon-btn {
+    padding: 11px 15px;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.icon-btn:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+}
+
+/* HERO */
+
+.hero {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.hero h1 {
+    font-size: clamp(28px,5vw,46px);
+    font-weight: 900;
+    margin-bottom: 12px;
+}
+
+.hero h1 span {
+    background: linear-gradient(90deg,#a78bfa,#ec4899);
+    color: transparent;
+    background-clip: text;
+}
+
+.hero p {
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.tag {
+    display: inline-block;
+    background: #8b5cf622;
+    color: #a78bfa;
+    padding: 7px 15px;
+    border-radius: 30px;
+    font-size: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #8b5cf655;
+}
+
+/* SETTINGS */
+
+.settings {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.setting {
+    background: var(--card);
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+.setting label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+select {
+    width: 100%;
+    padding: 12px;
+    background: var(--card2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* STATS */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 20px 10px;
+    border-radius: 17px;
+    text-align: center;
+    transition: .3s;
+}
+
+.stat:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+}
+
+.stat .emoji {
+    font-size: 23px;
+}
+
+.stat h2 {
+    font-size: 30px;
+    margin: 8px 0 5px;
+    background: linear-gradient(90deg,#a78bfa,#ec4899);
+    color: transparent;
+    background-clip: text;
+}
+
+.stat p {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* TYPING BOX */
+
+.typing-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px #0002;
+}
+
+.top-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.progress {
+    width: 100%;
+    height: 9px;
+    background: var(--card2);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 20px;
+    background: linear-gradient(90deg,#8b5cf6,#ec4899);
+    transition: width .2s;
+}
+
+#passage {
+    font-size: 21px;
+    line-height: 2;
+    letter-spacing: .4px;
+    min-height: 145px;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+    user-select: none;
+}
+
+.correct {
+    color: #22c55e;
+}
+
+.incorrect {
+    color: #fb5555;
+    background: #fb555522;
+    border-radius: 3px;
+}
+
+.current {
+    border-left: 2px solid #a78bfa;
+    animation: blink .7s infinite;
+}
+
+@keyframes blink {
+    50% { border-color: transparent; }
+}
+
+textarea {
+    display: block;
+    width: 100%;
+    height: 110px;
+    margin-top: 20px;
+    padding: 16px;
+    resize: vertical;
+    border-radius: 13px;
+    background: var(--card2);
+    border: 2px solid var(--border);
+    color: var(--text);
+    outline: none;
+    font-size: 16px;
+    transition: .3s;
+}
+
+textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 15px #8b5cf633;
+}
+
+/* BUTTONS */
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn {
+    flex: 1 1 140px;
+    min-height: 48px;
+    padding: 13px 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    color: white;
+    transition: .25s;
+}
+
+.btn:hover {
+    transform: translateY(-4px);
+    filter: brightness(1.12);
+    box-shadow: 0 8px 20px #0003;
+}
+
+.btn:active {
+    transform: scale(.96);
+}
+
+.btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.start {
+    background: linear-gradient(120deg,#7c3aed,#a855f7);
+}
+
+.restart {
+    background: linear-gradient(120deg,#e83e8c,#f97316);
+}
+
+.newtext {
+    background: linear-gradient(120deg,#0891b2,#06b6d4);
+}
+
+.pause {
+    background: linear-gradient(120deg,#d97706,#f59e0b);
+}
+
+/* RESULTS */
+
+.result {
+    display: none;
+    background: var(--card);
+    padding: 25px;
+    margin-top: 20px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    animation: appear .4s ease;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.result h2 {
+    color: #a78bfa;
+    margin-bottom: 15px;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 12px;
+}
+
+.result-box {
+    padding: 18px 8px;
+    background: var(--card2);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.result-box h3 {
+    color: #a78bfa;
+    font-size: 25px;
+}
+
+.result-box p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* HISTORY */
+
+.history {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 22px;
+    border-radius: 18px;
+    margin-top: 20px;
+}
+
+.history-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.history-head h2 {
+    font-size: 20px;
+}
+
+.clear-btn {
+    padding: 9px 13px;
+    background: #ef444422;
+    color: #fb6464;
+    border: 1px solid #ef444455;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 5px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+}
+
+.empty {
+    color: var(--muted);
+    padding: 15px 0;
+}
+
+footer {
+    text-align: center;
+    color: var(--muted);
+    padding: 30px 5px 10px;
+    font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:750px) {
+    .settings {
+        grid-template-columns: 1fr;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    header {
+        margin-bottom: 30px;
+    }
+}
+
+@media(max-width:480px) {
+    body {
+        padding: 13px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .icon-btn {
+        padding: 9px;
+        font-size: 12px;
+    }
+
+    .typing-card {
+        padding: 16px;
+    }
+
+    #passage {
+        font-size: 18px;
+        min-height: 130px;
+    }
+
+    .stat {
+        padding: 15px 7px;
+    }
+
+    .stat h2 {
+        font-size: 25px;
+    }
+
+    .controls .btn {
+        flex-basis: 100%;
+    }
+
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .history-item {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <div class="logo">⌨ Type<span>Master.</span></div>
+
+    <div class="header-buttons">
+        <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">
+            ☀ Light
+        </button>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="tag">✦ YOUR PERSONAL TYPING STUDIO</div>
+    <h1>Master Your <span>Typing Speed</span></h1>
+    <p>Practice smarter. Type faster. Achieve more.</p>
+</section>
+
+<section class="settings">
+
+    <div class="setting">
+        <label>⏱ Select Duration</label>
+        <select id="duration">
+            <option value="15">15 Seconds</option>
+            <option value="30">30 Seconds</option>
+            <option value="60" selected>60 Seconds</option>
+            <option value="120">120 Seconds</option>
+        </select>
+    </div>
+
+    <div class="setting">
+        <label>🎯 Difficulty Level</label>
+        <select id="difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+    </div>
+
+    <div class="setting">
+        <label>📚 Typing Category</label>
+        <select id="category">
+            <option value="general">General</option>
+            <option value="technology">Technology</option>
+            <option value="education">Education</option>
+            <option value="programming">Programming</option>
+        </select>
+    </div>
+
+</section>
+
+<section class="stats">
+
+    <div class="stat">
+        <div class="emoji">⏳</div>
+        <h2 id="time">60</h2>
+        <p>TIME LEFT</p>
+    </div>
+
+    <div class="stat">
+        <div class="emoji">⚡</div>
+        <h2 id="wpm">0</h2>
+        <p>WORDS / MIN</p>
+    </div>
+
+    <div class="stat">
+        <div class="emoji">🎯</div>
+        <h2 id="accuracy">100%</h2>
+        <p>ACCURACY</p>
+    </div>
+
+    <div class="stat">
+        <div class="emoji">❌</div>
+        <h2 id="errors">0</h2>
+        <p>ERRORS</p>
+    </div>
+
+</section>
+
+<section class="typing-card">
+
+    <div class="top-info">
+        <span id="status">● Ready to start</span>
+        <span id="progressText">0% Completed</span>
+    </div>
+
+    <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="passage"></div>
+
+    <textarea
+        id="typingInput"
+        placeholder="Click Start Test and type the displayed text here..."
+        disabled
+        spellcheck="false"
+        autocomplete="off"
+        autocapitalize="off">
+    </textarea>
+
+    <div class="controls">
+
+        <button class="btn start" onclick="startTest()">
+            ▶ Start Test
+        </button>
+
+        <button class="btn pause" onclick="pauseTest()" id="pauseBtn" disabled>
+            ⏸ Pause
+        </button>
+
+        <button class="btn restart" onclick="resetTest()">
+            ↻ Restart
+        </button>
+
+        <button class="btn newtext" onclick="newText()">
+            ✨ New Text
+        </button>
+
+    </div>
+
+</section>
+
+<section class="result" id="result">
+
+    <h2>🏆 Amazing! Test Completed</h2>
+
+    <div class="result-grid">
+
+        <div class="result-box">
+            <h3 id="finalWpm">0</h3>
+            <p>WPM</p>
+        </div>
+
+        <div class="result-box">
+            <h3 id="finalAccuracy">0%</h3>
+            <p>Accuracy</p>
+        </div>
+
+        <div class="result-box">
+            <h3 id="finalErrors">0</h3>
+            <p>Total Errors</p>
+        </div>
+
+    </div>
+
+    <br>
+    <p id="message"></p>
+
+</section>
+
+<section class="history">
+
+    <div class="history-head">
+        <h2>🏅 Your Performance</h2>
+        <button class="clear-btn" onclick="clearHistory()">
+            Clear History
+        </button>
+    </div>
+
+    <h3 id="best" style="color:#a78bfa;margin-bottom:15px">
+        Best Speed: 0 WPM
+    </h3>
+
+    <div id="historyList"></div>
+
+</section>
+
+<footer>
+    Made with 💜 | TypeMaster Typing Studio © 2026
+</footer>
+
+</div>
+
+<script>
+
+const data = {
+
+general: {
+easy: [
+"The sun is shining today. I love learning new things.",
+"Practice makes us better every day.",
+"Typing is an important computer skill."
+],
+medium: [
+"Success comes from hard work and regular practice.",
+"Technology makes our daily life easier and faster.",
+"Developing good habits improves our productivity."
+],
+hard: [
+"Consistency, determination and creativity lead to success.",
+"Modern technology creates wonderful opportunities for everyone.",
+"Communication and collaboration are important professional skills."
+]
+},
+
+technology: {
+easy: [
+"Computers help people complete their work.",
+"Technology is changing our world every day."
+],
+medium: [
+"Digital technology connects people around the world.",
+"Artificial intelligence helps solve many complex problems."
+],
+hard: [
+"Cybersecurity protects digital information from unauthorized access.",
+"Technological innovation transforms modern communication systems."
+]
+},
+
+education: {
+easy: [
+"Education helps us learn new skills.",
+"Students should practice every day."
+],
+medium: [
+"Education creates opportunities for personal development.",
+"Learning improves knowledge and problem solving abilities."
+],
+hard: [
+"Continuous learning encourages intellectual growth and innovation.",
+"Knowledge and practical experience contribute to professional development."
+]
+},
+
+programming: {
+easy: [
+"HTML creates the structure of a website.",
+"JavaScript makes websites interactive."
+],
+medium: [
+"CSS is used to design beautiful responsive web pages.",
+"JavaScript provides dynamic functionality to modern websites."
+],
+hard: [
+"Responsive applications adapt automatically to different screen sizes.",
+"Programming improves logical thinking and computational problem solving."
+]
+}
+
+};
+
+let text = "";
+let timer = null;
+let running = false;
+let paused = false;
+let remaining = 60;
+let startTime = 0;
+let elapsedBeforePause = 0;
+
+const input = document.getElementById("typingInput");
+const passage = document.getElementById("passage");
+
+function getText() {
+
+    const category = document.getElementById("category").value;
+    const level = document.getElementById("difficulty").value;
+
+    const list = data[category][level];
+
+    return list[Math.floor(Math.random() * list.length)];
+}
+
+function renderText() {
+
+    passage.innerHTML = "";
+
+    text.split("").forEach((char,index) => {
+
+        const span = document.createElement("span");
+
+        span.textContent = char;
+        span.className = "char";
+
+        if(index === 0) span.classList.add("current");
+
+        passage.appendChild(span);
+
+    });
+
+}
+
+function newText() {
+
+    if(running) {
+        alert("Please finish or restart the current test first.");
+        return;
+    }
+
+    text = getText();
+    resetTest();
+}
+
+function startTest() {
+
+    if(running) return;
+
+    if(paused) {
+        resumeTest();
+        return;
+    }
+
+    resetTest();
+
+    remaining = Number(document.getElementById("duration").value);
+
+    running = true;
+    paused = false;
+
+    startTime = Date.now();
+
+    input.disabled = false;
+    input.focus();
+
+    document.getElementById("status").textContent = "● Typing in progress";
+    document.getElementById("pauseBtn").disabled = false;
+    document.getElementById("pauseBtn").textContent = "⏸ Pause";
+
+    timer = setInterval(updateTimer,100);
+}
+
+function updateTimer() {
+
+    const elapsed = (Date.now() - startTime) / 1000;
+    remaining = Math.max(0, Number(document.getElementById("duration").value) - elapsed);
+
+    document.getElementById("time").textContent =
+        Math.ceil(remaining);
+
+    updateStats();
+
+    if(remaining <= 0) finishTest();
+}
+
+function pauseTest() {
+
+    if(!running) return;
+
+    if(!paused) {
+
+        clearInterval(timer);
+
+        elapsedBeforePause = Date.now() - startTime;
+        running = false;
+        paused = true;
+
+        input.disabled = true;
+
+        document.getElementById("pauseBtn").textContent = "▶ Resume";
+        document.getElementById("status").textContent = "⏸ Test paused";
+
+    } else {
+        resumeTest();
+    }
+
+}
+
+function resumeTest() {
+
+    if(!paused) return;
+
+    paused = false;
+    running = true;
+
+    startTime = Date.now() - elapsedBeforePause;
+
+    input.disabled = false;
+    input.focus();
+
+    document.getElementById("pauseBtn").textContent = "⏸ Pause";
+    document.getElementById("status").textContent = "● Typing in progress";
+
+    timer = setInterval(updateTimer,100);
+}
+
+input.addEventListener("input", () => {
+
+    if(!running) return;
+
+    const typed = input.value;
+    const spans = passage.querySelectorAll(".char");
+
+    spans.forEach((span,index) => {
+
+        span.className = "char";
+
+        if(index < typed.length) {
+
+            if(typed[index] === text[index]) {
+                span.classList.add("correct");
+            } else {
+                span.classList.add("incorrect");
+            }
+
+        }
+
+        if(index === typed.length) {
+            span.classList.add("current");
+        }
+
+    });
+
+    updateStats();
+
+    if(typed.length >= text.length) {
+        finishTest();
+    }
+
+});
+
+function updateStats() {
+
+    const typed = input.value;
+
+    let correct = 0;
+    let errors = 0;
+
+    for(let i = 0; i < typed.length; i++) {
+
+        if(typed[i] === text[i]) correct++;
+        else errors++;
+
+    }
+
+    const elapsed = Math.max(
+        (Date.now() - startTime) / 60000,
+        0.001
+    );
+
+    const wpm = Math.round((correct / 5) / elapsed);
+
+    const accuracy = typed.length
+        ? Math.round(correct / typed.length * 100)
+        : 100;
+
+    const progress = Math.min(
+        typed.length / text.length * 100,
+        100
+    );
+
+    document.getElementById("wpm").textContent = wpm;
+    document.getElementById("accuracy").textContent = accuracy + "%";
+    document.getElementById("errors").textContent = errors;
+
+    document.getElementById("progressBar").style.width =
+        progress + "%";
+
+    document.getElementById("progressText").textContent =
+        Math.round(progress) + "% Completed";
+
+}
+
+function finishTest() {
+
+    if(!running) return;
+
+    clearInterval(timer);
+
+    updateStats();
+
+    running = false;
+    paused = false;
+
+    input.disabled = true;
+
+    document.getElementById("pauseBtn").disabled = true;
+    document.getElementById("status").textContent = "✓ Test completed";
+
+    const wpm = Number(document.getElementById("wpm").textContent);
+    const accuracy = document.getElementById("accuracy").textContent;
+    const errors = document.getElementById("errors").textContent;
+
+    document.getElementById("finalWpm").textContent = wpm;
+    document.getElementById("finalAccuracy").textContent = accuracy;
+    document.getElementById("finalErrors").textContent = errors;
+
+    document.getElementById("message").textContent =
+        wpm >= 50 ? "🌟 Excellent typing performance!" :
+        wpm >= 30 ? "👏 Good job! Keep practicing!" :
+        "💪 Keep practicing to improve your speed!";
+
+    document.getElementById("result").style.display = "block";
+
+    saveHistory(wpm,accuracy);
+
+}
+
+function resetTest() {
+
+    clearInterval(timer);
+
+    running = false;
+    paused = false;
+
+    remaining = Number(document.getElementById("duration").value);
+
+    input.value = "";
+    input.disabled = true;
+
+    document.getElementById("time").textContent = remaining;
+    document.getElementById("wpm").textContent = 0;
+    document.getElementById("accuracy").textContent = "100%";
+    document.getElementById("errors").textContent = 0;
+
+    document.getElementById("progressBar").style.width = "0%";
+    document.getElementById("progressText").textContent = "0% Completed";
+
+    document.getElementById("status").textContent = "● Ready to start";
+
+    document.getElementById("pauseBtn").disabled = true;
+    document.getElementById("pauseBtn").textContent = "⏸ Pause";
+
+    document.getElementById("result").style.display = "none";
+
+    elapsedBeforePause = 0;
+
+    renderText();
+}
+
+function saveHistory(wpm,accuracy) {
+
+    let history = JSON.parse(
+        localStorage.getItem("typeHistory") || "[]"
+    );
+
+    history.unshift({
+        wpm: wpm,
+        accuracy: accuracy,
+        date: new Date().toLocaleDateString()
+    });
+
+    history = history.slice(0,10);
+
+    localStorage.setItem("typeHistory",JSON.stringify(history));
+
+    let best = Number(localStorage.getItem("typeBest")) || 0;
+
+    if(wpm > best) {
+        best = wpm;
+        localStorage.setItem("typeBest",best);
+    }
+
+    showHistory();
+
+}
+
+function showHistory() {
+
+    const history = JSON.parse(
+        localStorage.getItem("typeHistory") || "[]"
+    );
+
+    const best = Number(localStorage.getItem("typeBest")) || 0;
+
+    document.getElementById("best").textContent =
+        "🏆 Personal Best: " + best + " WPM";
+
+    document.getElementById("historyList").innerHTML =
+        history.length
+        ? history.map(item => `
+            <div class="history-item">
+                <b>⚡ ${item.wpm} WPM | 🎯 ${item.accuracy}</b>
+                <span>${item.date}</span>
+            </div>
+        `).join("")
+        : '<p class="empty">No typing records yet. Start your first test!</p>';
+
+}
+
+function clearHistory() {
+
+    if(confirm("Delete all typing history and personal best?")) {
+
+        localStorage.removeItem("typeHistory");
+        localStorage.removeItem("typeBest");
+
+        showHistory();
+
+    }
+
+}
+
+function toggleTheme() {
+
+    document.body.classList.toggle("light");
+
+    const light = document.body.classList.contains("light");
+
+    document.getElementById("themeBtn").textContent =
+        light ? "🌙 Dark" : "☀ Light";
+
+    localStorage.setItem("typeTheme",light ? "light" : "dark");
+
+}
+
+document.getElementById("duration").addEventListener("change",resetTest);
+
+document.getElementById("difficulty").addEventListener("change",() => {
+    newText();
+});
+
+document.getElementById("category").addEventListener("change",() => {
+    newText();
+});
+
+if(localStorage.getItem("typeTheme") === "light") {
+    document.body.classList.add("light");
+    document.getElementById("themeBtn").textContent = "🌙 Dark";
+}
+
+text = getText();
+resetTest();
+showHistory();
+
+</script>
+
+</body>
+</html>
